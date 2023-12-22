@@ -102,7 +102,7 @@ class SmartDatalake:
 
         self._load_dfs(dfs)
 
-        self._memory = memory or Memory(max_prompt_length=max_prompt_length)
+        self._memory = memory or Memory(max_length=max_prompt_length)
         self._code_manager = CodeManager(
             dfs=self._dfs,
             config=self._config,
