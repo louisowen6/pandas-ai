@@ -29,8 +29,10 @@ class Memory:
         """
         Truncates the message if it is longer than max_length
         """
-        # if self.max_length is None or self.max_length < 0:
-        #     return message
+        print("MAX LENGTH IS: ",self.max_length)
+        if self.max_length is None or self.max_length < 0:
+            print("SKIP TRUNCATING")
+            return message
         return (
             f"{message[:self.max_length]} ..." if len(str(message)) > self.max_length else message
         )
