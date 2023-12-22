@@ -8,9 +8,10 @@ class Memory:
     _messages: list
     _memory_size: int
 
-    def __init__(self, memory_size: int = 1):
+    def __init__(self, memory_size: int = 1, max_length: int = 100):
         self._messages = []
         self._memory_size = memory_size
+        self.max_length = max_length
 
     def add(self, message: str, is_user: bool):
         self._messages.append({"message": message, "is_user": is_user})
@@ -24,12 +25,14 @@ class Memory:
     def last(self) -> dict:
         return self._messages[-1]
 
-    def _truncate(self, message: Union[str, int], max_length: int = 100) -> str:
+    def _truncate(self, message: Union[str, int]) -> str:
         """
         Truncates the message if it is longer than max_length
         """
+        if self.max_length is None or self.max_length < 0:
+            return message
         return (
-            f"{message[:max_length]} ..." if len(str(message)) > max_length else message
+            f"{message[:self.max_length]} ..." if len(str(message)) > self.max_length else message
         )
 
     def get_messages(self, limit: int = None) -> list:

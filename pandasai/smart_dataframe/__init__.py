@@ -239,6 +239,7 @@ class SmartDataframe(DataframeAbstract, Shortcuts):
         custom_head: pd.DataFrame = None,
         config: Config = None,
         logger: Logger = None,
+        max_prompt_length: int = 100,
     ):
         """
         Args:
@@ -248,6 +249,10 @@ class SmartDataframe(DataframeAbstract, Shortcuts):
             custom_head (pd.DataFrame, optional): Sample head of the dataframe.
             config (Config, optional): Config to be used. Defaults to None.
             logger (Logger, optional): Logger to be used. Defaults to None.
+            max_prompt_length (int, optional): Maximum number of characters of the instruction to be passed
+                                            to the prompt. Instruction with number of characters passing this
+                                            threshold will be truncated. If None or negative number is passed, 
+                                            then truncation will not happen.
         """
         self._original_import = df
 
@@ -277,7 +282,7 @@ class SmartDataframe(DataframeAbstract, Shortcuts):
 
         self._table_description = description
         self._table_name = name
-        self._lake = SmartDatalake([self], config, logger)
+        self._lake = SmartDatalake([self], config, logger, max_prompt_length = max_prompt_length)
 
         # set instance type in SmartDataLake
         self._lake.set_instance_type(self.__class__.__name__)

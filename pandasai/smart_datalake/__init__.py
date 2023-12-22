@@ -76,12 +76,17 @@ class SmartDatalake:
         logger: Logger = None,
         memory: Memory = None,
         cache: Cache = None,
+        max_prompt_length: int = 100
     ):
         """
         Args:
             dfs (List[Union[DataFrameType, Any]]): List of dataframes to be used
             config (Union[Config, dict], optional): Config to be used. Defaults to None.
             logger (Logger, optional): Logger to be used. Defaults to None.
+            max_prompt_length (int, optional): Maximum number of characters of the instruction to be passed
+                                            to the prompt. Instruction with number of characters passing this
+                                            threshold will be truncated. If None or negative number is passed, 
+                                            then truncation will not happen.
         """
 
         self._load_config(config)
@@ -97,7 +102,7 @@ class SmartDatalake:
 
         self._load_dfs(dfs)
 
-        self._memory = memory or Memory()
+        self._memory = memory or Memory(max_prompt_length=max_prompt_length)
         self._code_manager = CodeManager(
             dfs=self._dfs,
             config=self._config,
